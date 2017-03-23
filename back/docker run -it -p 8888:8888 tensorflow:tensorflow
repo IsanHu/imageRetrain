@@ -1,0 +1,17 @@
+docker run -it -p 8888:8888 tensorflow/tensorflow bash
+docker run -it -v $HOME/tf_files:/tf_files -v $HOME/tensorflow:/tensorflow  tensorflow/tensorflow bash
+
+
+python retrain_with_gif.py \
+--bottleneck_dir=./bottlenecks \
+--how_many_training_steps 1000 \
+--model_dir=./inception \
+--output_graph=./retrained_graph.pb \
+--output_labels=./retrained_labels.txt \
+--image_dir ./images
+
+
+python ~/tf_files/label_image.py ~/tf_files/flower_photos/roses/2414954629_3708a1a04d.jpg
+python ~/tf_files/label_image.py ~/Desktop/IMG_1123.PNG
+python ~/tf_files/label_image.py ~/Desktop/zhang.gif
+python ~/tf_files/label_image.py ~/Desktop/er.gif
