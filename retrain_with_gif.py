@@ -364,7 +364,7 @@ def create_bottleneck_file(bottleneck_path, image_lists, label_name, index,
     bottleneck_file.write(bottleneck_string)
 
 def read_image2RGBbytes(image_path):
-  print image_path
+  print (image_path)
   jpgext = ['.jpg', '.jpeg', '.JPG', '.JPEG']
   # if (os.path.splitext(image_path)[1] in jpgext):
   #   image_data = gfile.FastGFile(image_path, 'rb').read()
