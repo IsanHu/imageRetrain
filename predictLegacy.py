@@ -51,8 +51,6 @@ def read_image2RGBbytesFrom(image_path):
 def predict(images):
 
     imageRootPath = os.path.abspath(os.path.dirname(__file__)) + '/static/images/'
-
-
     updated_imgs = []
     for img in images:
         imgPath = os.path.join(imageRootPath, img)
@@ -85,6 +83,8 @@ def predict(images):
 def begin():
     last_id = -1
     images = DATA_PROVIDER.get_next_patch_image(last_id)
+    print len(images)
+    return
     if len(images) == 0:
         return
     else:
