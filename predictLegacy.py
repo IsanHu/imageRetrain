@@ -1,6 +1,7 @@
 #-*- coding:utf-8 -*-
 from PIL import Image, ImageSequence
 import os
+from io import BytesIO
 import sys
 import datetime
 from sys import argv
