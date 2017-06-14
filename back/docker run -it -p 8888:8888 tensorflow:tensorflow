@@ -2,6 +2,9 @@ docker run -it -p 8888:8888 tensorflow/tensorflow bash
 docker run -it -v $HOME/tf_files:/tf_files -v $HOME/tensorflow:/tensorflow  tensorflow/tensorflow bash
 
 
+## Google Cloud
+python ~/code/tensorflow/tensorflow/examples/image_retraining/retrain.py --bottleneck_dir=~/imageretrain/bottlenecks --model_dir=~/imageretrain/inception --output_graph=~/imageretrain/retrained_graph.pb --output_labels=~/imageretrain/retrained_labels.txt --image_dir ~/data/flower_photos
+
 python retrain_with_gif.py \
 --bottleneck_dir=./bottlenecks \
 --how_many_training_steps 1000 \
@@ -13,11 +16,22 @@ python retrain_with_gif.py \
 
 nohup python retrain_with_gif.py \
 --bottleneck_dir=./bottlenecks \
---how_many_training_steps 1000 \
+--how_many_training_steps 8000 \
 --model_dir=./inception \
+--train_batch_size=1000 \
+--print_misclassified_test_images True \
 --output_graph=./retrained_graph.pb \
 --output_labels=./retrained_labels.txt \
---image_dir /home/3isan333/retrainImages  > retrain.log
+--image_dir /home/3isan333/retrainImages  > retrain.log &
+
+nohup python retrain_with_gif.py \
+--bottleneck_dir=./bottlenecks \
+--how_many_training_steps 1000 \
+--model_dir=./inception \
+--train_batch_size=1000 \
+--output_graph=./retrained_graph.pb \
+--output_labels=./retrained_labels.txt \
+--image_dir /home/3isan333/retrainImages  > retrain.log &
 
 
 
@@ -32,3 +46,12 @@ python ~/tf_files/label_image.py ~/tf_files/flower_photos/roses/2414954629_3708a
 python ~/tf_files/label_image.py ~/Desktop/IMG_1123.PNG
 python ~/tf_files/label_image.py ~/Desktop/zhang.gif
 python ~/tf_files/label_image.py ~/Desktop/er.gif
+
+
+
+## image recognition
+python /Users/isan/Dev/ML/TensorFlow-Model/tutorials/image/imagenet/classify_image.py --model_dir=/Users/isan/Dev/ML/imageRetrain/inception --image_file=
+
+
+
+nohup python predictCandidateAndFilterImages.py /home/3isan333/retrainImages/dongman /home/3isan333/retrainImages/dongman_trash/ /home/3isan333/retrainImages/dongman_un/ > dongman_un.log &
