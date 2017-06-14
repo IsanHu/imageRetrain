@@ -98,8 +98,6 @@ def begin():
 			errror_imgs.append(img.path)
 
 	print "总共有%d个数据处理失败" % len(errror_imgs)
-	print errror_imgs
-
 	print "开始删除处理失败的数据========="
 
 	for img in errror_imgs:
