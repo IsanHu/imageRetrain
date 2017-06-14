@@ -1,5 +1,5 @@
 #-*- coding:utf-8 -*-
-from sqlalchemy import Column, String, Integer, ForeignKey, Numeric, Date
+from sqlalchemy import Column, String, Integer,Float, ForeignKey, Numeric, Date
 from Model import Model
 import json
 import os
@@ -16,7 +16,7 @@ class ImageModel(Model):
     width = Column(Integer, nullable=False, default=0)
     height = Column(Integer, nullable=False, default=0)
     category = Column(Integer, nullable=False, default=0)
-    confidence = Column(float, nullable=False, default=0)
+    confidence = Column(Float, nullable=False, default=0)
     predict_info = Column(String(1024), nullable=False, default='')
     checked = Column(Integer, nullable=False, default=0)
     ahash8 = Column(String(1024), nullable=False, default='')
