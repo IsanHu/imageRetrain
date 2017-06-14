@@ -35,14 +35,11 @@ def begin():
 
 			filePath = os.path.join(categoryPath, f)
 			size = os.path.getsize(filePath) / 1024
-			print 'size : %d' % size
 
 
 			img = Image.open(filePath)
 			width = img.size[0]
 			height = img.size[1]
-			print width
-			print height
 
 			ahash8 = imagehash.average_hash(img,8)
 			ahashString8 = ahash8.__str__()
@@ -69,11 +66,12 @@ def begin():
 				print "插入数据: %d ~ %d" % (index - 10, index)
 				DATA_PROVIDER.add_images(imgs)
 				imgs = []
-			if index >= 10:
-				return
-
 		else:
 			print "%s 文件类型不对" % f
+
+	print "插入最后数据: %d" % index
+	DATA_PROVIDER.add_images(imgs)
+	imgs = []
 
 
 begin()
