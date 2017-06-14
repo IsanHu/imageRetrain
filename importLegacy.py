@@ -20,6 +20,9 @@ def allowed_file(filename):
 		filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS			
 
 imageRootPath = os.path.abspath(os.path.dirname(__file__)) + '/static/images/'
+print imageRootPath
+
+
 category = argv[1]
 categoryPath = os.path.join(imageRootPath, category)
 
@@ -113,5 +116,5 @@ def begin():
 
 
 
-begin()
+# begin()
 
