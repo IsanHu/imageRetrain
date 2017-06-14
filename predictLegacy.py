@@ -42,8 +42,9 @@ def read_image2RGBbytesFrom(image_path):
               temImg = frames[frameCount - 4]
               temImg.convert('RGB').save(output, 'JPEG')
           image_data = output.getvalue()
-      except:
+      except (Exception) as e:
         print ("读取图片失败")
+        print e.message
         return None
   return image_data
 
@@ -57,8 +58,10 @@ def predict(images):
         print imgPath
         try:
             image_data = read_image2RGBbytesFrom(imgPath)
-        except:
+        except (Exception) as e:
             print "读取图片失败"
+            print e.message
+            print "continue"
             continue
 
         try:
@@ -77,8 +80,9 @@ def predict(images):
         except:
             print "预测失败"
             continue
-
-    DATA_PROVIDER.add_images(updated_imgs)
+    print "更新预测结果"
+    if len(updated_imgs) > 0:
+    	DATA_PROVIDER.add_images(updated_imgs)
 
 def begin():
     last_id = -1
