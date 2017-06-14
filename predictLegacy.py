@@ -10,6 +10,7 @@ from data_service import DATA_PROVIDER
 from Models import ImageModel
 import tensorflow as tf
 import json
+from time import sleep
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -98,6 +99,7 @@ def begin():
         if len(images) == 0:
             break
         else:
+            print "预测%d~%d=====" % (images[0].id, images[-1].id)
             predict(images)
             last_id = images[-1].id
             count = count + image_count
@@ -106,4 +108,5 @@ def begin():
 
     print "总共预测了%d个图片" % count
 
+sleep(120)
 begin()
