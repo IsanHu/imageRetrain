@@ -73,9 +73,9 @@ def predict(images):
             for node_id in top_k:
                 human_string = label_lines[node_id]
                 score = predictions[0][node_id]
-                re[human_string] = score
+                re[human_string] = round(score, 4)
                 if human_string == img.category_name():
-                    img.confidence = score
+                    img.confidence = round(score, 4)
             img.predict_info = json.dumps(re)
             img.update_time = datetime.now()
             updated_imgs.append(img)
