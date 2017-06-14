@@ -103,9 +103,10 @@ def begin():
 	print "开始删除处理失败的数据========="
 
 	for img in errror_imgs:
-		img_path = os.path.join(imageRootPath, "/" + img)
+		img_path = os.path.join(imageRootPath, img)
 		try:
 			cmd = "rm " + img_path
+			print cmd
 			os.system(cmd)
 		except (Exception) as e:
 			print "删除%s失败" % img
@@ -116,5 +117,5 @@ def begin():
 
 
 
-# begin()
+begin()
 
