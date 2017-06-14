@@ -53,7 +53,7 @@ def predict(images):
     imageRootPath = os.path.abspath(os.path.dirname(__file__)) + '/static/images/'
     updated_imgs = []
     for img in images:
-        imgPath = os.path.join(imageRootPath, img)
+        imgPath = os.path.join(imageRootPath, img.path)
         print imgPath
         try:
             image_data = read_image2RGBbytesFrom(imgPath)
