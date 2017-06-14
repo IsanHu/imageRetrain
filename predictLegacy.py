@@ -88,13 +88,22 @@ def predict(images):
     	DATA_PROVIDER.add_images(updated_imgs)
 
 def begin():
+    count = 0
     last_id = -1
-    images = DATA_PROVIDER.get_next_patch_image(last_id)
-    print len(images)
-    if len(images) == 0:
-        return
-    else:
-        predict(images)
-        last_id = images[-1].id
+
+    while(True):
+        images = DATA_PROVIDER.get_next_patch_image(last_id)
+        image_count = len(images)
+        print len(images)
+        if len(images) == 0:
+            break
+        else:
+            predict(images)
+            last_id = images[-1].id
+            count = count + image_count
+            if count == 90:
+                break
+
+    print "总共预测了%d个图片" % count
 
 begin()
