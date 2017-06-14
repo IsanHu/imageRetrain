@@ -21,12 +21,6 @@ import global_config
 from Models import ImageModel
 from Models import init_database
 
-db_engine = create_engine(global_config.config['db_engine'], isolation_level="READ UNCOMMITTED")
-session_factory = sessionmaker(bind=db_engine)
-Scope_Session = scoped_session(session_factory)
-
-per_page = 10
-
 class DataService:
     def __init__(self, engine):
         """
@@ -36,7 +30,11 @@ class DataService:
         """
         if not engine:
             raise ValueError('The values specified in engine parameter has to be supported by SQLAlchemy')
-        print 'init DataService'
+        self.engine = engine
+        db_engine = create_engine(engine, isolation_level="READ UNCOMMITTED")
+        db_session = sessionmaker(bind=db_engine)
+        self.session = db_session()
+        print 'init DataProviderService'
 
     def init_database(self):
         """
@@ -46,12 +44,25 @@ class DataService:
         init_database(self.engine)
 
 
+
     def add_images(self, images):
-        temp_session = Scope_Session()
         for img in images:
-            temp_session.add(img)
-        temp_session.commit()
-        Scope_Session.remove()
+            self.session.add(img)
+        self.session.commit()
+
+    def get_next_patch_image(self, latestId, serialize=False):
+        try:
+            images = self.query(ImageModel).filter(ImageModel.confidence != 0, ImageModel.id > latestId).limit(10)
+            # clean_images = [ImageModel.get_new_instance(img) for img in images]
+            if serialize:
+                return [img.mini_serialize() for img in images]
+            else:
+                return images
+        except (Exception) as e:
+            print "抓到exception"
+            print "get_next_patch_image"
+            print e.message
+            return [], [], 1
 
 
 

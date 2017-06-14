@@ -24,6 +24,24 @@ class ImageModel(Model):
     update_time = Column(Date, nullable=False)
     status = Column(Integer, nullable=False, default=0)
 
+    @classmethod
+    def get_new_instance(cls, img):
+        new_img = ImageModel(id=img.id,
+                             path=img.path,
+                             size=img.size,
+                             width=img.width,
+                             height=img.height,
+                             category=img.category,
+                             confidence=img.confidence,
+                             predict_info=img.predict_info,
+                             checked=img.checked,
+                             ahash8=img.ahash8,
+                             ahash16=img.ahash16,
+                             update_time=img.update_time,
+                             status=img.status,
+                       )
+        return new_img
+
     def serialize(self):
         return {
             "id": self.id,
