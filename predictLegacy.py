@@ -57,7 +57,6 @@ def predict(images):
     updated_imgs = []
     for img in images:
         imgPath = os.path.join(imageRootPath, img.path)
-        print imgPath
         try:
             image_data = read_image2RGBbytesFrom(imgPath)
         except (Exception) as e:
@@ -108,5 +107,5 @@ def begin():
 
     print "总共预测了%d个图片" % count
 
-sleep(120)
+sleep(20)
 begin()
