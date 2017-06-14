@@ -24,54 +24,70 @@ category = argv[1]
 categoryPath = os.path.join(imageRootPath, category)
 
 category_id = category_dic[category]
-
+errror_imgs = []
 def begin():
 	index = 0
 	imgs = []
 	for f in sorted(os.listdir(categoryPath)):
 		if allowed_file(f):
 			rePath = category + "/" + f
-			print rePath
+			try:
+				filePath = os.path.join(categoryPath, f)
+				size = os.path.getsize(filePath) / 1024
 
-			filePath = os.path.join(categoryPath, f)
-			size = os.path.getsize(filePath) / 1024
 
+				img = Image.open(filePath)
+				width = img.size[0]
+				height = img.size[1]
 
-			img = Image.open(filePath)
-			width = img.size[0]
-			height = img.size[1]
+				ahash8 = imagehash.average_hash(img,8)
+				ahashString8 = ahash8.__str__()
 
-			ahash8 = imagehash.average_hash(img,8)
-			ahashString8 = ahash8.__str__()
-			print ahash8
+				ahash16 = imagehash.average_hash(img,16)
+				ahashString16 = ahash16.__str__()
 
-			ahash16 = imagehash.average_hash(img,16)
-			ahashString16 = ahash16.__str__()
-			print ahash16
+				imgModel = ImageModel(path=rePath,
+									  size=size,
+									  width=width,
+									  height=height,
+									  category=category_id,
+									  ahash8=ahashString8,
+									  ahash16=ahashString16,
+									  update_time=datetime.now())
+				imgs.append(imgModel)
 
-			imgModel = ImageModel(path=rePath,
-								  size=size,
-								  width=width,
-								  height=height,
-								  category=category_id,
-								  ahash8=ahashString8,
-								  ahash16=ahashString16,
-								  update_time=datetime.now())
-			imgs.append(imgModel)
-
+			except (Exception) as e:
+				print "处理 %s 出错" % rePath
+				errror_imgs.append(rePath)
+				print e.message
+				continue
 
 			index = index + 1
-			## 每10个插入一次数据
-			if index % 10 == 0:
-				print "插入数据: %d ~ %d" % (index - 10, index)
-				DATA_PROVIDER.add_images(imgs)
+			try:
+				## 每10个插入一次数据
+				if index % 10 == 0:
+					print "插入数据: %d ~ %d" % (index - len(imgs), index)
+					DATA_PROVIDER.add_images(imgs)
+					imgs = []
+			except (Exception) as e:
+				print "插入数据失败: %d ~ %d" % (index - len(imgs), index)
+				for img in imgs:
+					errror_imgs.append(img.path)
 				imgs = []
 		else:
 			print "%s 文件类型不对" % f
 
-	print "插入最后数据: %d" % index
-	DATA_PROVIDER.add_images(imgs)
-	imgs = []
+	try:
+		print "插入最后%d个数据" % len(imgs)
+		DATA_PROVIDER.add_images(imgs)
+	except (Exception) as e:
+		print "插入最后%d个数据出错" % len(imgs)
+		for img in imgs:
+			errror_imgs.append(img.path)
+
+	print "总共有%d个数据处理失败" % len(errror_imgs)
+	print errror_imgs
+
 
 
 begin()
