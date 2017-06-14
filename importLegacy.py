@@ -28,17 +28,22 @@ errror_imgs = []
 def begin():
 	index = 0
 	imgs = []
-	for f in sorted(os.listdir(categoryPath)):
+	for f in os.listdir(categoryPath):
+		rePath = category + "/" + f
 		if allowed_file(f):
-			rePath = category + "/" + f
 			try:
-				filePath = os.path.join(categoryPath, f)
-				size = os.path.getsize(filePath) / 1024
-
-
 				img = Image.open(filePath)
 				width = img.size[0]
 				height = img.size[1]
+
+				ratio = float(width) / float(height)
+				if ratio > 2 or ratio < 0.5:
+					print "%s ratio不合理: %f" % (f, ratio)
+					errror_imgs.append(rePath)
+					continue
+
+				filePath = os.path.join(categoryPath, f)
+				size = os.path.getsize(filePath) / 1024
 
 				ahash8 = imagehash.average_hash(img,8)
 				ahashString8 = ahash8.__str__()
@@ -66,9 +71,9 @@ def begin():
 			try:
 				## 每10个插入一次数据
 				if index % 10 == 0:
-					print "插入数据: %d ~ %d" % (index - len(imgs), index)
 					DATA_PROVIDER.add_images(imgs)
 					imgs = []
+					print "插入数据: %d ~ %d" % (index - len(imgs), index)
 			except (Exception) as e:
 				print "插入数据失败: %d ~ %d" % (index - len(imgs), index)
 				for img in imgs:
@@ -76,6 +81,7 @@ def begin():
 				imgs = []
 		else:
 			print "%s 文件类型不对" % f
+			errror_imgs.append(rePath)
 
 	try:
 		print "插入最后%d个数据" % len(imgs)
@@ -87,6 +93,19 @@ def begin():
 
 	print "总共有%d个数据处理失败" % len(errror_imgs)
 	print errror_imgs
+
+	print "开始删除处理失败的数据========="
+
+	for img in errror_imgs:
+		img_path = os.path.join(imageRootPath, "/" + img)
+		try:
+			cmd = "rm " + img_path
+		except (Exception) as e:
+			print "删除%s失败" % img
+
+	files = os.listdir(categoryPath)
+	print "有效数据: %d" % len(files)
+
 
 
 
