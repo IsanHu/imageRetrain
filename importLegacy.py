@@ -78,8 +78,8 @@ def begin():
 				## 每10个插入一次数据
 				if index % 10 == 0:
 					DATA_PROVIDER.add_images(imgs)
-					imgs = []
 					print "插入数据: %d ~ %d" % (index - len(imgs), index)
+					imgs = []
 			except (Exception) as e:
 				print "插入数据失败: %d ~ %d" % (index - len(imgs), index)
 				for img in imgs:
