@@ -84,7 +84,6 @@ def begin():
     last_id = -1
     images = DATA_PROVIDER.get_next_patch_image(last_id)
     print len(images)
-    return
     if len(images) == 0:
         return
     else:
