@@ -28,10 +28,13 @@ errror_imgs = []
 def begin():
 	index = 0
 	imgs = []
-	for f in os.listdir(categoryPath):
+	files = os.listdir(categoryPath)
+	print '总共有%d文件' % len(files)
+	for f in files:
 		rePath = category + "/" + f
 		if allowed_file(f):
 			try:
+				filePath = os.path.join(categoryPath, f)
 				img = Image.open(filePath)
 				width = img.size[0]
 				height = img.size[1]
@@ -42,7 +45,7 @@ def begin():
 					errror_imgs.append(rePath)
 					continue
 
-				filePath = os.path.join(categoryPath, f)
+
 				size = os.path.getsize(filePath) / 1024
 
 				ahash8 = imagehash.average_hash(img,8)
@@ -100,6 +103,7 @@ def begin():
 		img_path = os.path.join(imageRootPath, "/" + img)
 		try:
 			cmd = "rm " + img_path
+			os.system(cmd)
 		except (Exception) as e:
 			print "删除%s失败" % img
 
