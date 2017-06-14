@@ -46,6 +46,14 @@ class DataService:
         init_database(self.engine)
 
 
+    def add_images(self, images):
+        temp_session = Scope_Session()
+        for img in images:
+            temp_session.add(img)
+        temp_session.commit()
+        Scope_Session.remove()
+
+
 
 DATA_PROVIDER = DataService(global_config.config['db_engine'])
 

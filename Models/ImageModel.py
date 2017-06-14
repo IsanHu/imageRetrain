@@ -16,12 +16,13 @@ class ImageModel(Model):
     width = Column(Integer, nullable=False, default=0)
     height = Column(Integer, nullable=False, default=0)
     category = Column(Integer, nullable=False, default=0)
-    confidence = Column(Float, nullable=False, default=0)
-    predict_info = Column(String(1024), nullable=False, default='')
+    confidence = Column(Float, nullable=True, default=0)
+    predict_info = Column(String(1024), nullable=True, default='')
     checked = Column(Integer, nullable=False, default=0)
     ahash8 = Column(String(1024), nullable=False, default='')
     ahash16 = Column(String(1024), nullable=False, default='')
     update_time = Column(Date, nullable=False)
+    status = Column(Integer, nullable=False, default=0)
 
     def serialize(self):
         return {
@@ -37,6 +38,7 @@ class ImageModel(Model):
             "ahash8":self.ahash8,
             "ahash16":self.ahash16,
             "update_time": str(self.update_time),
+            "status": self.status,
         }
 
     def category_name(self):
