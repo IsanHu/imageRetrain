@@ -77,9 +77,11 @@ def predict(images):
                 if human_string == img.category_name():
                     img.confidence = score
             img.predict_info = json.dumps(re)
+            img.update_time = datetime.now()
             updated_imgs.append(img)
-        except:
+        except (Exception) as e:
             print "预测失败"
+            print e.message
             continue
     print "更新预测结果"
     if len(updated_imgs) > 0:
@@ -94,6 +96,5 @@ def begin():
     else:
         predict(images)
         last_id = images[-1].id
-        print last_id
 
 begin()

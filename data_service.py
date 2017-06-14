@@ -53,7 +53,6 @@ class DataService:
     def get_next_patch_image(self, latestId, serialize=False):
         try:
             images = self.session.query(ImageModel).filter(ImageModel.confidence == 0, ImageModel.id > latestId).limit(10).all()
-            print images
             if serialize:
                 return [img.mini_serialize() for img in images]
             else:
