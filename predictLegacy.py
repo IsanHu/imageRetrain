@@ -109,14 +109,14 @@ def begin():
 
 
 def saowei():
-	images = DATA_PROVIDER.get_unpredict_image(last_id)
-    image_count = len(images)
-    print len(images)
-    if len(images) == 0:
-    	return
+	images = DATA_PROVIDER.get_unpredict_image()
+	image_count = len(images)
+	print len(images)
+	if len(images) == 0:
+		return
 
-    print "预测====="
-    predict(images)
+	print "预测====="
+	predict(images)
 
 
 saowei()
