@@ -22,7 +22,7 @@ for (key, value) in category_dic.items():
 
     categoryPath = os.path.join(imageRootPath, key)
     files = os.listdir(categoryPath)
-    disk_count = len(disk_files)
+    disk_count = len(files)
     print "%s 在磁盘中有%d个图片" % (key, disk_count)
     if disk_count != db_count:
         print "%s 在数据库中和在磁盘中的图片数量不一样" % key
