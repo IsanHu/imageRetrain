@@ -63,6 +63,19 @@ class DataService:
             print e.message
             return []
 
+    def get_unpredict_image(self, latestId, serialize=False):
+        try:
+            images = self.session.query(ImageModel).filter(ImageModel.confidence == 0, ImageModel.predict_info =="").all()
+            if serialize:
+                return [img.mini_serialize() for img in images]
+            else:
+                return images
+        except (Exception) as e:
+            print "抓到exception"
+            print "get_next_patch_image"
+            print e.message
+            return []
+
 
 
 DATA_PROVIDER = DataService(global_config.config['db_engine'])

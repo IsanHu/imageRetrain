@@ -107,5 +107,18 @@ def begin():
 
     print "总共预测了%d个图片" % count
 
-sleep(20)
-begin()
+
+def saowei():
+	images = DATA_PROVIDER.get_unpredict_image(last_id)
+    image_count = len(images)
+    print len(images)
+    if len(images) == 0:
+    	return
+
+    print "预测====="
+    predict(images)
+
+
+saowei()
+
+
