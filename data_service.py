@@ -76,6 +76,9 @@ class DataService:
             print e.message
             return []
 
+    def image_count_of_category(self, category_id):
+        count = self.session.query(ImageModel).filter(ImageModel.category == category_id).count
+        return count
 
 
 DATA_PROVIDER = DataService(global_config.config['db_engine'])
