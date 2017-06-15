@@ -63,7 +63,7 @@ class DataService:
             print e.message
             return []
 
-    def get_unpredict_image(self, latestId, serialize=False):
+    def get_unpredict_image(self, serialize=False):
         try:
             images = self.session.query(ImageModel).filter(ImageModel.confidence == 0, ImageModel.predict_info =="").all()
             if serialize:
