@@ -16,7 +16,7 @@ print imageRootPath
 
 
 
-for (key, value) in category_dic:
+for (key, value) in category_dic.items():
     db_count = DATA_PROVIDER.image_count_of_category(value)
     print "%s 在数据库中有%d个图片" % (key, db_count)
 
