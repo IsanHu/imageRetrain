@@ -120,6 +120,11 @@ def saowei():
 	predict(images)
 
 
-saowei()
+def test_query():
+    count, images = DATA_PROVIDER.testFilter()
+    print count
+    print images
 
+
+test_query()
 

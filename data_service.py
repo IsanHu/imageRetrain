@@ -21,6 +21,7 @@ import global_config
 from Models import ImageModel
 from Models import init_database
 
+per_page = 20
 class DataService:
     def __init__(self, engine):
         """
@@ -78,8 +79,59 @@ class DataService:
 
     def image_count_of_category(self, category_id):
         count = self.session.query(ImageModel).filter(ImageModel.category == category_id).count()
-        print count
         return count
+
+    # def images_at_page(self, page=1, confidence=-1, moreConfident=True, checked=-1, serialize=False):
+    #     try:
+    #         offset = (page - 1) * per_page
+    #
+    #         countQuery = self.session.query(ImageModel)
+    #         imagesQuery = self.session.query(ImageModel)
+    #
+    #         if checked != -1:
+    #             countQuery.filter
+    #
+    #
+    #         if confidence == -1:
+    #
+    #
+    #
+    #
+    #         count = self.session.query(ImageModel).filter(ImageModel. != -1, Video.name.like('%' + key + '%')).count()
+    #         page_count = int(math.ceil(count / float(per_page)))
+    #         print page_count
+    #         if page_count == 0:
+    #             page_count = 1
+    #
+    #         page_indexs = [(i + 1) for i in range(page_count)]
+    #         current_page = page
+    #
+    #         videos = temp_session.query(Video).filter(Video.status != -1, Video.name.like('%' + key + '%')).order_by(
+    #             Video.upload_time.desc()).offset(offset).limit(per_page)
+    #         clean_videos = [Video.get_new_instance(vi) for vi in videos]
+    #         Scope_Session.remove()
+    #         if serialize:
+    #             return [vi.mini_serialize() for vi in clean_videos], page_indexs, current_page
+    #         else:
+    #             return clean_videos, page_indexs, current_page
+    #     except (Exception) as e:
+    #         print "抓到exception"
+    #         print "all_videos 操作失败"
+    #         print e.message
+    #         return [], [], 1
+
+    def testFilter(self):
+        countQuery = self.session.query(ImageModel)
+        countQuery = countQuery.filter(ImageModel.category == 1)
+        countQuery = countQuery.filter(ImageModel.confidence > 0.9)
+        count = countQuery.count()
+
+        images = countQuery.order_by(ImageModel.confidence.desc()).limit(10)
+
+        return count, images
+
+
+
 
 
 DATA_PROVIDER = DataService(global_config.config['db_engine'])
