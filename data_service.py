@@ -77,7 +77,8 @@ class DataService:
             return []
 
     def image_count_of_category(self, category_id):
-        count = self.session.query(ImageModel).filter(ImageModel.category == category_id).count
+        count = self.session.query(ImageModel).filter(ImageModel.category == category_id).count()
+        print count
         return count
 
 
