@@ -126,7 +126,7 @@ class DataService:
         countQuery = countQuery.filter(ImageModel.confidence > 0.9)
         count = countQuery.count()
 
-        images = countQuery.order_by(ImageModel.confidence.desc()).limit(10)
+        images = countQuery.order_by(ImageModel.confidence.desc()).limit(10).all()
 
         return count, images
 
