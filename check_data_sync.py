@@ -21,7 +21,7 @@ for (key, value) in category_dic.items():
     print "%s 在数据库中有%d个图片" % (key, db_count)
 
     categoryPath = os.path.join(imageRootPath, key)
-    disk_files = os.listdir(category_dic)
+    files = os.listdir(categoryPath)
     disk_count = len(disk_files)
     print "%s 在磁盘中有%d个图片" % (key, disk_count)
     if disk_count != db_count:
