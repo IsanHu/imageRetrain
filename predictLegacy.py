@@ -1,5 +1,5 @@
 #-*- coding:utf-8 -*-
-from PIL import Image, ImageFile
+from PIL import Image, ImageFile, ImageSequence
 import os
 from io import BytesIO
 import sys
