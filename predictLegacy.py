@@ -1,5 +1,5 @@
 #-*- coding:utf-8 -*-
-from PIL import Image, ImageSequence
+from PIL import Image, ImageFile
 import os
 from io import BytesIO
 import sys
@@ -12,6 +12,7 @@ import tensorflow as tf
 import json
 from time import sleep
 
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 # Loads label file, strips off carriage return
