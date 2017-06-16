@@ -91,8 +91,8 @@ from tensorflow.python.util import compat
 
 ## 设置gpu占用显存比例
 config = tf.ConfigProto()
-config.gpu_options.per_process_gpu_memory_fraction = 0.8 # 占用GPU40%的显存
-# print ("占用百分之60的gpu显存")
+config.gpu_options.per_process_gpu_memory_fraction = 0.6 # 占用GPU40%的显存
+print ("占用百分之60的gpu显存")
 
 FLAGS = None
 
@@ -1066,7 +1066,7 @@ if __name__ == '__main__':
   )
   parser.add_argument(
       '--flip_left_right',
-      default=True,
+      default=False,
       help="""\
       Whether to randomly flip half of the training images horizontally.\
       """,
@@ -1075,7 +1075,7 @@ if __name__ == '__main__':
   parser.add_argument(
       '--random_crop',
       type=int,
-      default=10,
+      default=0,
       help="""\
       A percentage determining how much of a margin to randomly crop off the
       training images.\
@@ -1084,7 +1084,7 @@ if __name__ == '__main__':
   parser.add_argument(
       '--random_scale',
       type=int,
-      default=20,
+      default=0,
       help="""\
       A percentage determining how much to randomly scale up the size of the
       training images by.\
