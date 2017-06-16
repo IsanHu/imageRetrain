@@ -1065,7 +1065,7 @@ if __name__ == '__main__':
   )
   parser.add_argument(
       '--flip_left_right',
-      default=False,
+      default=True,
       help="""\
       Whether to randomly flip half of the training images horizontally.\
       """,
@@ -1074,7 +1074,7 @@ if __name__ == '__main__':
   parser.add_argument(
       '--random_crop',
       type=int,
-      default=0,
+      default=10,
       help="""\
       A percentage determining how much of a margin to randomly crop off the
       training images.\
@@ -1083,7 +1083,7 @@ if __name__ == '__main__':
   parser.add_argument(
       '--random_scale',
       type=int,
-      default=0,
+      default=20,
       help="""\
       A percentage determining how much to randomly scale up the size of the
       training images by.\
