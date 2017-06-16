@@ -91,7 +91,8 @@ from tensorflow.python.util import compat
 
 ## 设置gpu占用显存比例
 config = tf.ConfigProto()
-config.gpu_options.per_process_gpu_memory_fraction = 0.8 # 占用GPU40%的显存
+config.gpu_options.per_process_gpu_memory_fraction = 0.6 # 占用GPU40%的显存
+print ("占用百分之60的gpu显存")
 
 FLAGS = None
 
