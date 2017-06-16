@@ -88,6 +88,11 @@ from tensorflow.python.framework import tensor_shape
 from tensorflow.python.platform import gfile
 from tensorflow.python.util import compat
 
+
+## 设置gpu占用显存比例
+config = tf.ConfigProto()
+config.gpu_options.per_process_gpu_memory_fraction = 0.8 # 占用GPU40%的显存
+
 FLAGS = None
 
 # These are all parameters that are tied to the particular model architecture
@@ -249,7 +254,7 @@ def create_inception_graph():
     Graph holding the trained Inception network, and various tensors we'll be
     manipulating.
   """
-  with tf.Session() as sess:
+  with tf.Session(config=config) as sess:
     model_filename = os.path.join(
         FLAGS.model_dir, 'classify_image_graph_def.pb')
     with gfile.FastGFile(model_filename, 'rb') as f:
@@ -824,7 +829,7 @@ def main(_):
   do_distort_images = should_distort_images(
       FLAGS.flip_left_right, FLAGS.random_crop, FLAGS.random_scale,
       FLAGS.random_brightness)
-  sess = tf.Session()
+  sess = tf.Session(config=config)
 
   if do_distort_images:
     # We will be applying distortions, so setup the operations we'll need.
