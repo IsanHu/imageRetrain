@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block title %}分类模型训练数据管理{% endblock %}
+
+{% block page_content %}
+
+<style type="text/css">
+    .sticker {
+
+    }
+    .thumbnail.is-selected {
+        background-color:#d1e8f5;
+    }
+
+</style>
+
+<div class="container" id="task_page">
+  <div style="position: fixed;z-index: 99;background:rgba(255, 255, 255, 0.9); width:90%">
+    <div class="form-inline" style="margin-top: 16px">
+                            
+        <div class="form-group">
+            <h5>类别:</h5>
+        </div>
+        <select class="form-control" id="id-category-list" style="width: 100px">
+            <option v-for="category in categoryList">
+                ${category}
+            </option>
+        </select>
+        
+        &nbsp &nbsp  &nbsp &nbsp  
+        <div class="form-group">
+            <h5>置信度：</h5>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="language" id="greater" checked> 
+            大于  
+          </label>
+          <label>
+            <input type="radio" name="language" id="smaller">
+            小于 
+          </label>
+        </div>
+
+        <select class="form-control" id="id-confidence-list" style="width: 100px">
+            <option v-for="confidence in confidenceList">
+                ${confidence}
+            </option>
+        </select>
+
+        &nbsp &nbsp  &nbsp &nbsp
+        <div class="form-group">
+            <h5>是否经过确认：</h5>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="confirm" id="unconfirmed" checked>
+            尚未确认的&nbsp
+          </label>
+          <label>
+            <input type="radio" name="confirm" id="confirmed">
+            已确认的&nbsp  
+          </label>
+          <label>
+            <input type="radio" name="confirm" id="noneconfirm">
+            不限&nbsp
+          </label>
+        </div>
+        
+        <div class="form-group" style="height: 30px; float: right;">
+          <button class="btn btn-primary" id="searchButton" type="button">确认</button>
+        </div>
+
+    </div>
+    
+
+
+    <form class="form-inline" style="padding-left: 0px;margin-top: 15px">
+        <button id="id-btn-select-all" type="button" class="btn btn-default" style="margin-right: 10px">全选</button>
+        <button id="id-btn-unselect-all" type="button" class="btn btn-default" style="margin-right: 10px">全不选</button>
+        <button id="id-btn-reverse-select" type="button" class="btn btn-default" style="margin-right: 10px">反选</button>
+        <div class="form-group" style="display: inline-block;padding-top: 10px">
+            <span>${task_count}张图片</span>
+            <span style="font-size: 18px">选中</span>
+            <span style="color: #d9534f; font-size: 18px">${selected_count}</span>
+            <span style="font-size: 18px">张</span>
+        </div>
+
+        <button id="id-btn-remove" type="button" class="btn btn-danger" style=" margin-left: 25px;">删除</button>
+        <button id="id-btn-to-confirm" type="button" class="btn btn-default" style="margin-left: 15px;">确认</button>
+        
+        
+    </form>
+  </div>
+    <div class="row" style="margin-top: 115px;">
+        <sticker v-for="image in stickers" v-bind:src="image">
+        </sticker>
+    </div>
+    
+
+
+    <nav style="width: 100%; text-align: center;">
+      <ul class="pagination">
+        <li id="prePageButton" onClick="javascript:prePageButtonClicked()">
+          <span aria-hidden="true">&laquo;</span>
+        </li>
+        <li is="pageindex" v-bind:current_page=current_page v-for="p_index in page_indexs" v-bind:p_index="p_index"></tr>
+        </pageindex>
+        
+        <li id="nextPageButton" onClick="javascript:nextPageButtonClicked()">
+            <span aria-hidden="true">&raquo;</span>
+        </li>
+      </ul>
+    </nav>
+    
+  </div>
+{% endblock %}
+
+
+{% block scripts %}
+<script type="text/javascript" src="static/js/vue/vue-classify-train.js"></script>
+
+<script type="text/javascript">
+  $("#searchButton").on("click", function(){
+      search();
+  });
+</script>
+
+{% endblock %}

@@ -21,6 +21,9 @@ import global_config
 from Models import ImageModel
 from Models import init_database
 
+category_dic_id = {"baoman":1, "dongman": 2, "food":3, "pet":4, "realman":5, "view": 6}
+category_dic_readable_id = {"暴漫":1, "动漫": 2, "美食":3, "萌宠":4, "真人":5, "美景": 6}
+
 per_page = 20
 class DataService:
     def __init__(self, engine):
@@ -81,44 +84,44 @@ class DataService:
         count = self.session.query(ImageModel).filter(ImageModel.category == category_id).count()
         return count
 
-    # def images_at_page(self, page=1, confidence=-1, moreConfident=True, checked=-1, serialize=False):
-    #     try:
-    #         offset = (page - 1) * per_page
-    #
-    #         countQuery = self.session.query(ImageModel)
-    #         imagesQuery = self.session.query(ImageModel)
-    #
-    #         if checked != -1:
-    #             countQuery.filter
-    #
-    #
-    #         if confidence == -1:
-    #
-    #
-    #
-    #
-    #         count = self.session.query(ImageModel).filter(ImageModel. != -1, Video.name.like('%' + key + '%')).count()
-    #         page_count = int(math.ceil(count / float(per_page)))
-    #         print page_count
-    #         if page_count == 0:
-    #             page_count = 1
-    #
-    #         page_indexs = [(i + 1) for i in range(page_count)]
-    #         current_page = page
-    #
-    #         videos = temp_session.query(Video).filter(Video.status != -1, Video.name.like('%' + key + '%')).order_by(
-    #             Video.upload_time.desc()).offset(offset).limit(per_page)
-    #         clean_videos = [Video.get_new_instance(vi) for vi in videos]
-    #         Scope_Session.remove()
-    #         if serialize:
-    #             return [vi.mini_serialize() for vi in clean_videos], page_indexs, current_page
-    #         else:
-    #             return clean_videos, page_indexs, current_page
-    #     except (Exception) as e:
-    #         print "抓到exception"
-    #         print "all_videos 操作失败"
-    #         print e.message
-    #         return [], [], 1
+    def images_at_page(self, page=1, category="类别", confidence=-1, grater=1, checked=-1, serialize=False):
+        try:
+            offset = (page - 1) * per_page
+
+            imagesQuery = self.session.query(ImageModel)
+
+            if category_dic_readable_id.has_key(category):
+                category_id = category_dic_readable_id[category]
+                imagesQuery = imagesQuery.filter(ImageModel.category == category_id)
+
+            if checked != -1:
+                imagesQuery = imagesQuery.filter(ImageModel.checked == checked)
+
+            if confidence != -1:
+                if grater == 1:
+                    imagesQuery = imagesQuery.filter(ImageModel.confidence >= confidence)
+                else:
+                    imagesQuery = imagesQuery.filter(ImageModel.confidence <= confidence)
+
+            count = imagesQuery.count()
+            page_count = int(math.ceil(count / float(per_page)))
+            print page_count
+            if page_count == 0:
+                page_count = 1
+
+            page_indexs = [(i + 1) for i in range(page_count)]
+            current_page = page
+
+            images = imagesQuery.order_by(ImageModel.confidence.desc()).offset(offset).limit(per_page).all()
+            if serialize:
+                return [img.serialize() for img in images], page_indexs, current_page
+            else:
+                return images, page_indexs, current_page
+        except (Exception) as e:
+            print "抓到exception"
+            print "images_at_page 操作失败"
+            print e.message
+            return [], [], 1
 
     def testFilter(self):
         countQuery = self.session.query(ImageModel)
