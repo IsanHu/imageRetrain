@@ -244,7 +244,7 @@ Vue.component('sticker', {
     props: ['src'],
     template: 
       '<div @click="toggleSelection" class="thumbnail col-xs-5 col-sm-5 col-md-4 col-lg-3" v-bind:class="{\'is-selected\': src.selected}">' +
-          '<img id="sticker" class="thumbnail sticker" style="width: 100%;margin-bottom:4px" v-bind:src="{{src.path}}" v-bind:imageid="{{src.path}}" ></img>' +
+          '<img id="sticker" class="thumbnail sticker" style="width: 100%;margin-bottom:4px" v-bind:src="src.path" v-bind:imageid="src.path" ></img>' +
           '<dl>' + 
               '<dt>类别：{{src.category}}  置信度：{{src.confidence}}</dt>' +
               '<dt>尺寸：{{src.width}}*{{src.height}}  文件大小: {{src.size}}KB' +
