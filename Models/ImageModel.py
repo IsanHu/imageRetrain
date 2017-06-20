@@ -43,7 +43,7 @@ class ImageModel(Model):
     def serialize(self):
         return {
             "id": self.id,
-            "path": "/static/images/" + self.path,
+            "path": "/categoryimages/static/images/" + self.path,
             "size": self.size,
             "width": self.width,
             "height": self.height,
