@@ -13,7 +13,7 @@ from Models import ImageModel
 ALLOWED_EXTENSIONS = set(['gif', 'GIF', 'jpg', 'JPG', 'jpeg', 'JPEG'])
 IGNORED_FILES = set(['.gitignore', '.DS_Store'])
 
-category_dic = {"baoman": 1,"dongman": 2, "food": 3, "pet": 4, "realman": 5, "view": 6}
+category_dic = {"baoman": 1,"dongman": 2, "food": 3, "pet": 4, "realman": 5, "view": 6, "mogutou": 7}
 
 def allowed_file(filename):
     return '.' in filename and \
