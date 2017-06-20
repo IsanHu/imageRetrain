@@ -357,7 +357,7 @@ $(document).ready(function(){
       waitingDialog.show('处理中...')
 
       var params = {
-        "image_ids": stickerIds,
+        "image_ids": JSON.stringify(stickerIds),
       };
 
       console.log(params)
@@ -397,8 +397,62 @@ $(document).ready(function(){
       });
     });
 
+    $("#id-btn-remove").on("click", function(){
+      var stickerIds = [];
+      tasks.stickers.forEach(function(sticker){
+          if(sticker.selected){
+              stickerIds.push(sticker.id)
+          }
+      });
 
-    
+      if(stickerIds.length <= 0) {
+        alert("尚未选择图片")
+        return
+      }
+
+
+      waitingDialog.show('处理中...')
+
+      var params = {
+        "image_ids": JSON.stringify(stickerIds),
+      };
+
+      console.log(params)
+      url = "/remove_images"
+      $.ajax({
+          type: "POST",
+          data: params,
+          url: url,
+          success: function(data) {
+              waitingDialog.hide();
+              console.log("成功");
+              if(data['result'] == 1) {
+                console.log(data['message'])
+              }else{
+                alert(data['error_message'])
+                console.log(data['error_message'])
+                return
+              }
+              //重置 
+              remain_stickers = []
+              for (var i = 0; i < tasks.stickers.length; i++) {
+                var sticker = tasks.stickers[i]
+                if(sticker.selected == false) {
+                  remain_stickers.push(sticker)
+                }
+              }
+
+              tasks.stickers = remain_stickers
+              tasks.task_count = remain_stickers.length
+              tasks.selected_count = 0
+              tasks.selectClick = []
+          },
+          error: function(data) {
+              waitingDialog.hide();
+          },
+          dataType: "json"
+      });
+    });
 })
 
 

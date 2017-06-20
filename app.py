@@ -15,6 +15,7 @@ from sys import argv
 
 from data_service import DATA_PROVIDER
 from Models import ImageModel
+import json
 
 
 reload(sys)
@@ -48,9 +49,18 @@ def get_images_at_page():
 @app.route("/confirm_images", methods=['POST'])
 def confirm_images():
     params = request.form
-    image_ids = params['image_ids']
+    image_ids = json.loads(params['image_ids'])
     print image_ids
     result = DATA_PROVIDER.confirm_images_with_ids(image_ids)
+    return simplejson.dumps(result)
+
+
+@app.route("/remove_images", methods=['POST'])
+def remove_images():
+    params = request.form
+    image_ids = json.loads(params['image_ids'])
+    print image_ids
+    result = DATA_PROVIDER.remove_images_with_ids(image_ids)
     return simplejson.dumps(result)
 
 
