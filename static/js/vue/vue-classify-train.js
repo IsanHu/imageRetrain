@@ -246,8 +246,9 @@ Vue.component('sticker', {
       '<div @click="toggleSelection" class="thumbnail col-xs-5 col-sm-5 col-md-4 col-lg-3" v-bind:class="{\'is-selected\': src.selected}">' +
           '<img id="sticker" class="thumbnail sticker" style="width: 100%;margin-bottom:4px" v-bind:src="src.path" v-bind:imageid="src.path" ></img>' +
           '<dl>' + 
-              '<dt>类别：{{src.category}}  置信度：{{src.confidence}}</dt>' +
-              '<dt>尺寸：{{src.width}}*{{src.height}}  文件大小: {{src.size}}KB' +
+              '<dt>类别：{{src.category}} &nbsp &nbsp 置信度：{{src.confidence}}</dt>' +
+              '<dt>状态：{{src.status}}</dt>' +
+              '<dt>尺寸：{{src.width}}*{{src.height}} &nbsp &nbsp 文件大小: {{src.size}}KB' +
               '<dt>预测详情：{{src.predict_info}}</dt>' +
           '</dl>' +
       '</div>',
@@ -309,6 +310,86 @@ Vue.component('sticker', {
     }
 });
 
+$(document).ready(function(){
+
+    $("#id-btn-select-all").on("click", function(){
+        for (var i = 0; i < tasks.stickers.length; i++) {
+            var img = tasks.stickers[i]
+            img.selected = true
+        }
+        tasks.selected_count = tasks.stickers.length
+    });
+
+    $("#id-btn-unselect-all").on("click", function(){
+        for (var i = 0; i < tasks.stickers.length; i++) {
+            var img = tasks.stickers[i]
+            img.selected = false
+        }
+        tasks.selected_count = 0
+    });
+
+    $("#id-btn-reverse-select").on("click", function(){
+        var count = 0
+        for (var i = 0; i < tasks.stickers.length; i++) {
+            var img = tasks.stickers[i]
+            img.selected = !img.selected
+            if (img.selected) {
+                count++
+            }
+        }
+        tasks.selected_count = count
+    });
+
+    $("#id-btn-to-confirm").on("click", function(){
+      waitingDialog.show('处理中...')
+      var stickerIds = [];
+      tasks.stickers.forEach(function(sticker){
+          if(sticker.selected){
+              stickers.push(sticker.id)
+          }
+      });
+
+      if(stickerIds.length <= 0) {
+        alert("尚未选择图片")
+      }
+
+      var params = {
+        "image_ids": stickerIds,
+      };
+
+      console.log(params)
+      url = "/confirm_images"
+      $.ajax({
+          type: "POST",
+          data: params,
+          url: url,
+          success: function(data) {
+              waitingDialog.hide();
+              console.log("成功");
+              //重置 
+              remain_stickers = []
+              for (var i = 0; i < tasks.stickers.length; i++) {
+                var sticker = tasks.stickers[i]
+                if(sticker.selected == false) {
+                  remain_stickers.push(sticker)
+                }
+              }
+
+              tasks.stickers = remain_stickers
+              tasks.task_count = remain_stickers.length
+              tasks.selected_count = 0
+              tasks.selectClick = []
+          },
+          error: function(data) {
+              waitingDialog.hide();
+          },
+          dataType: "json"
+      });
+    });
+
+
+    
+})
 
 
 

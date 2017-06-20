@@ -45,6 +45,14 @@ def get_images_at_page():
     images, page_indexs, current_page = DATA_PROVIDER.images_at_page(page=page, category=category, confidence=confidence,grater=greater,checked=checked,serialize=True)
     return simplejson.dumps({"images":images, "page_indexs":page_indexs, "current_page": current_page})
 
+@app.route("/confirm_images", methods=['POST'])
+def confirm_images():
+    params = request.form
+    image_ids = params['image_ids']
+    print image_ids
+    result = DATA_PROVIDER.confirm_images_with_ids(image_ids)
+    return simplejson.dumps(result)
+
 
 if __name__ == "__main__":
     port = argv[1]

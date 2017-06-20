@@ -95,7 +95,7 @@ class DataService:
                 imagesQuery = imagesQuery.filter(ImageModel.category == category_id)
 
             if checked != -1:
-                imagesQuery = imagesQuery.filter(ImageModel.checked == checked)
+                imagesQuery = imagesQuery.filter(ImageModel.status == checked)
 
             if confidence != -1:
                 if grater == 1:
@@ -122,6 +122,32 @@ class DataService:
             print "images_at_page 操作失败"
             print e.message
             return [], [], 1
+
+
+    def confirm_images_with_ids(self, image_ids):
+        try:
+            images = []
+            for img_id in image_ids:
+                imgs = self.session.query(ImageModel).filter(ImageModel.id == img_id).limit(1).all()
+                if len(imgs) == 1:
+                    images.append(imgs[0])
+        except (Exception) as e:
+            print "查询出所有要操作的数据失败: "
+            print e.message
+            return {"result": 0, "error_message": "查询出所有要操作的数据失败: %s" % e.message}
+        try:
+            for img in images:
+                img.status = 1
+            for img in images:
+                self.session.add(img)
+
+            self.session.commit()
+        except (Exception) as e:
+            print "更新图片状态失败: %s" % e.message
+            return {"result": 0, "error_message": "更新图片状态失败: %s" % e.message}
+
+        return {"result": 1, "message": "更新成功 %d 张图片" % len(images)}
+
 
     def testFilter(self):
         countQuery = self.session.query(ImageModel)
