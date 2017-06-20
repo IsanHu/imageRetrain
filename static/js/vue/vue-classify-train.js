@@ -350,6 +350,7 @@ $(document).ready(function(){
 
       if(stickerIds.length <= 0) {
         alert("尚未选择图片")
+        return
       }
 
 
