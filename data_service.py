@@ -82,8 +82,10 @@ class DataService:
             return []
 
     def image_count_of_category(self, category_id):
-        count = self.session.query(ImageModel).filter(ImageModel.category == category_id and ImageModel.status != -1).count()
-        return count
+        countQuery = self.session.query(ImageModel).filter(ImageModel.category == category_id)
+        countQuery.filter(ImageModel.status != -1)
+
+        return countQuery.count()
 
     def images_at_page(self, page=1, category="类别", confidence=-1, grater=1, checked=-1, serialize=False):
         try:
