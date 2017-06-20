@@ -84,7 +84,7 @@ class DataService:
     def image_count_of_category(self, category_id):
         countQuery = self.session.query(ImageModel).filter(ImageModel.category == category_id)
         countQuery.filter(ImageModel.status != -1)
-
+        print "数据库中的有效数据"
         return countQuery.count()
 
     def images_at_page(self, page=1, category="类别", confidence=-1, grater=1, checked=-1, serialize=False):
