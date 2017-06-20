@@ -341,17 +341,19 @@ $(document).ready(function(){
     });
 
     $("#id-btn-to-confirm").on("click", function(){
-      waitingDialog.show('处理中...')
       var stickerIds = [];
       tasks.stickers.forEach(function(sticker){
           if(sticker.selected){
-              stickers.push(sticker.id)
+              stickerIds.push(sticker.id)
           }
       });
 
       if(stickerIds.length <= 0) {
         alert("尚未选择图片")
       }
+
+
+      waitingDialog.show('处理中...')
 
       var params = {
         "image_ids": stickerIds,
