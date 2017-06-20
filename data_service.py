@@ -17,6 +17,7 @@ import datetime
 import sys
 import math
 import global_config
+import os
 
 from Models import ImageModel
 from Models import init_database
@@ -151,6 +152,7 @@ class DataService:
 
 
     def remove_images_with_ids(self, image_ids):
+        imageRootPath = os.path.abspath(os.path.dirname(__file__)) + '/static/images/'
         try:
             images = []
             for img_id in image_ids:
@@ -163,6 +165,10 @@ class DataService:
             return {"result": 0, "error_message": "查询出所有要操作的数据失败: %s" % e.message}
         try:
             for img in images:
+                imgPath = os.path.join(imageRootPath, img.path)
+                if os.path.isfile(imgPath):
+                    print "删除: %s" % imgPath
+                    os.remove(imgPath)
                 img.status = -1
             for img in images:
                 self.session.add(img)
