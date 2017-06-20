@@ -369,6 +369,13 @@ $(document).ready(function(){
           success: function(data) {
               waitingDialog.hide();
               console.log("成功");
+              if(data['result'] == 1) {
+                console.log(data['message'])
+              }else{
+                alert(data['error_message'])
+                console.log(data['error_message'])
+                return
+              }
               //重置 
               remain_stickers = []
               for (var i = 0; i < tasks.stickers.length; i++) {
