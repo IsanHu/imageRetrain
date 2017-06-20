@@ -30,11 +30,11 @@ bootstrap = Bootstrap(app)
 init_route(app)
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/categoryimages', methods=['GET', 'POST'])
 def index():
     return render_template('index.html', tab='upload')
 
-@app.route("/images", methods=['POST'])
+@app.route("/categoryimages/images", methods=['POST'])
 def get_images_at_page():
     params = request.form
     page = int(params['page'])
@@ -46,7 +46,7 @@ def get_images_at_page():
     images, page_indexs, current_page = DATA_PROVIDER.images_at_page(page=page, category=category, confidence=confidence,grater=greater,checked=checked,serialize=True)
     return simplejson.dumps({"images":images, "page_indexs":page_indexs, "current_page": current_page})
 
-@app.route("/confirm_images", methods=['POST'])
+@app.route("/categoryimages/confirm_images", methods=['POST'])
 def confirm_images():
     params = request.form
     image_ids = json.loads(params['image_ids'])
@@ -55,7 +55,7 @@ def confirm_images():
     return simplejson.dumps(result)
 
 
-@app.route("/remove_images", methods=['POST'])
+@app.route("/categoryimages/remove_images", methods=['POST'])
 def remove_images():
     params = request.form
     image_ids = json.loads(params['image_ids'])
